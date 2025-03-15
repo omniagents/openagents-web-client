@@ -55,22 +55,24 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col p-4 md:p-8 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+    <main className="flex flex-col h-screen bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
       {showAgentIdPrompt && <AgentIdPrompt onSubmit={handleAgentIdSubmit} />}
       
-      <h1 className="text-3xl font-bold mb-6 text-blue-600 dark:text-blue-400">OpenAgents Web Client</h1>
-      
-      <div className="mb-6">
-        <ConnectionStatus 
-          isConnected={isConnected} 
-          agentId={agentId} 
-          onDisconnect={disconnect}
-          onChangeAgentId={setAgentId}
-        />
+      <div className="p-4 md:p-6">
+        <h1 className="text-3xl font-bold mb-4 text-blue-600 dark:text-blue-400">OpenAgents Web Client</h1>
+        
+        <div className="mb-4">
+          <ConnectionStatus 
+            isConnected={isConnected} 
+            agentId={agentId} 
+            onDisconnect={disconnect}
+            onChangeAgentId={setAgentId}
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-1 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 p-4 md:px-6 pb-6 overflow-hidden">
+        <div className="md:col-span-1 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-md overflow-hidden flex flex-col">
           {!isConnected ? (
             <NetworkSelector 
               networks={networks} 
@@ -88,7 +90,7 @@ export default function Home() {
           )}
         </div>
         
-        <div className="md:col-span-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-md">
+        <div className="md:col-span-2 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-md overflow-hidden flex flex-col">
           <MessagePanel 
             messages={messages} 
             currentAgentId={agentId}
