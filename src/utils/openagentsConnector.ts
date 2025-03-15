@@ -1,5 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
+// WebSocket proxy configuration
+const WS_PROXY_URL = 'wss://websocket.openagents.org';
+
 export interface NetworkProfile {
   authentication: {
     config: Record<string, any>;
@@ -92,7 +95,11 @@ export class OpenAgentsConnector {
       return new Promise<boolean>((resolve) => {
         // Use the browser's WebSocket API
         if (typeof window !== 'undefined') {
-          this.connection = new WebSocket(`ws://${this.host}:${this.port}`);
+          // Use the WebSocket proxy instead of connecting directly
+          // Pass the target host and port as query parameters
+          const wsUrl = `${WS_PROXY_URL}/?host=${this.host}&port=${this.port}`;
+          
+          this.connection = new WebSocket(wsUrl);
 
           this.connection.onopen = () => {
             // Register with server

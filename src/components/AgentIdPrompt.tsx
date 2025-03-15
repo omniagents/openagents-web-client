@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { FiUserPlus } from 'react-icons/fi';
 
 interface AgentIdPromptProps {
   onSubmit: (agentId: string) => void;
@@ -9,6 +10,16 @@ interface AgentIdPromptProps {
 
 const AgentIdPrompt: React.FC<AgentIdPromptProps> = ({ onSubmit }) => {
   const [agentId, setAgentId] = useState<string>('');
+  
+  // Load previously used agent ID from localStorage on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedAgentId = localStorage.getItem('openagents_agent_id');
+      if (savedAgentId) {
+        setAgentId(savedAgentId);
+      }
+    }
+  }, []);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,6 +31,11 @@ const AgentIdPrompt: React.FC<AgentIdPromptProps> = ({ onSubmit }) => {
   const generateRandomId = () => {
     const randomId = uuidv4().substring(0, 8);
     setAgentId(randomId);
+  };
+
+  const generateWebClientId = () => {
+    const webClientId = `web-client-${uuidv4().substring(0, 8)}`;
+    setAgentId(webClientId);
   };
 
   return (
@@ -55,12 +71,20 @@ const AgentIdPrompt: React.FC<AgentIdPromptProps> = ({ onSubmit }) => {
             </div>
           </div>
           
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={generateWebClientId}
+              className="text-blue-500 dark:text-blue-400 hover:underline text-sm flex items-center"
+            >
+              Generate Web Client ID
+            </button>
+            
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center"
             >
-              Continue
+              <FiUserPlus className="mr-2" /> Continue
             </button>
           </div>
         </form>
